@@ -1,4 +1,15 @@
 service : () -> {
-  getMessage : () -> (text) query;
-  testFunction : () -> (text) query;
+  authorizeInstitution : (principal) -> (text);
+  derivation_origin : () -> (text) query;
+  get_credential : (text) -> (text);
+  issueCredential : (
+      record {
+        issueDate : nat64;
+        institution : principal;
+        degree : text;
+        student : principal;
+      },
+    ) -> (nat64);
+  prepare_credential : (text) -> (text);
+  vc_consent_message : () -> (text) query;
 }

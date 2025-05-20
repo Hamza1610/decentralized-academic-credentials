@@ -3549,12 +3549,12 @@ function dew() {
     return this;
   };
   var errors2 = {};
-  function E(sym, getMessage2, Base) {
+  function E(sym, getMessage, Base) {
     errors2[sym] = /* @__PURE__ */ function(Base2) {
       function NodeError() {
         Base2.call(this);
         Object.defineProperty(this, "message", {
-          value: getMessage2.apply(this, arguments),
+          value: getMessage.apply(this, arguments),
           writable: true,
           configurable: true
         });
@@ -4228,12 +4228,12 @@ var require_core = __commonJS({
       var x = Math.round(Math.log(n4) * Math.LOG10E);
       return x - (Number("1e" + x) > n4);
     }
-    function Record4(obj) {
+    function Record3(obj) {
       for (var k in obj) {
-        if (obj instanceof Record4 || hop.call(obj, k)) defineProperty(this, k, { value: obj[k], enumerable: true, writable: true, configurable: true });
+        if (obj instanceof Record3 || hop.call(obj, k)) defineProperty(this, k, { value: obj[k], enumerable: true, writable: true, configurable: true });
       }
     }
-    Record4.prototype = objCreate(null);
+    Record3.prototype = objCreate(null);
     function List() {
       defineProperty(this, "length", { writable: true, value: 0 });
       if (arguments.length) arrPush.apply(this, arrSlice.call(arguments));
@@ -4732,7 +4732,7 @@ var require_core = __commonJS({
         availableLocale = BestAvailableLocale(availableLocales, noExtensionsLocale);
         i2++;
       }
-      var result2 = new Record4();
+      var result2 = new Record3();
       if (availableLocale !== void 0) {
         result2["[[locale]]"] = availableLocale;
         if (String(locale) !== String(noExtensionsLocale)) {
@@ -4766,7 +4766,7 @@ var require_core = __commonJS({
         extensionSubtags = split3.call(extension2, "-");
         extensionSubtagsLength = extensionSubtags.length;
       }
-      var result2 = new Record4();
+      var result2 = new Record3();
       result2["[[dataLocale]]"] = foundLocale;
       var supportedExtension = "-u";
       var i2 = 0;
@@ -4843,7 +4843,7 @@ var require_core = __commonJS({
     function SupportedLocales(availableLocales, requestedLocales, options) {
       var matcher = void 0, subset = void 0;
       if (options !== void 0) {
-        options = new Record4(toObject2(options));
+        options = new Record3(toObject2(options));
         matcher = options.localeMatcher;
         if (matcher !== void 0) {
           matcher = String(matcher);
@@ -4964,7 +4964,7 @@ var require_core = __commonJS({
         options = {};
       else
         options = toObject2(options);
-      var opt = new Record4(), matcher = GetOption(options, "localeMatcher", "string", new List("lookup", "best fit"), "best fit");
+      var opt = new Record3(), matcher = GetOption(options, "localeMatcher", "string", new List("lookup", "best fit"), "best fit");
       opt["[[localeMatcher]]"] = matcher;
       var localeData = internals.NumberFormat["[[localeData]]"];
       var r3 = ResolveLocale(internals.NumberFormat["[[availableLocales]]"], requestedLocales, opt, internals.NumberFormat["[[relevantExtensionKeys]]"], localeData);
@@ -5306,7 +5306,7 @@ var require_core = __commonJS({
       configurable: true,
       writable: true,
       value: function value() {
-        var prop = void 0, descs = new Record4(), props = ["locale", "numberingSystem", "style", "currency", "currencyDisplay", "minimumIntegerDigits", "minimumFractionDigits", "maximumFractionDigits", "minimumSignificantDigits", "maximumSignificantDigits", "useGrouping"], internal3 = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
+        var prop = void 0, descs = new Record3(), props = ["locale", "numberingSystem", "style", "currency", "currencyDisplay", "minimumIntegerDigits", "minimumFractionDigits", "maximumFractionDigits", "minimumSignificantDigits", "maximumSignificantDigits", "useGrouping"], internal3 = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
         if (!internal3 || !internal3["[[initializedNumberFormat]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.NumberFormat object.");
         for (var i2 = 0, max = props.length; i2 < max; i2++) {
           if (hop.call(internal3, prop = "[[" + props[i2] + "]]")) descs[props[i2]] = { value: internal3[prop], writable: true, configurable: true, enumerable: true };
@@ -5612,7 +5612,7 @@ var require_core = __commonJS({
       internal3["[[initializedIntlObject]]"] = true;
       var requestedLocales = CanonicalizeLocaleList(locales);
       options = ToDateTimeOptions(options, "any", "date");
-      var opt = new Record4();
+      var opt = new Record3();
       var matcher = GetOption(options, "localeMatcher", "string", new List("lookup", "best fit"), "best fit");
       opt["[[localeMatcher]]"] = matcher;
       var DateTimeFormat = internals.DateTimeFormat;
@@ -5629,7 +5629,7 @@ var require_core = __commonJS({
         if (tz !== "UTC") throw new RangeError("timeZone is not supported.");
       }
       internal3["[[timeZone]]"] = tz;
-      opt = new Record4();
+      opt = new Record3();
       for (var prop in dateTimeComponents) {
         if (!hop.call(dateTimeComponents, prop)) continue;
         var value = GetOption(options, prop, "string", dateTimeComponents[prop]);
@@ -5710,7 +5710,7 @@ var require_core = __commonJS({
       if (options === void 0) options = null;
       else {
         var opt2 = toObject2(options);
-        options = new Record4();
+        options = new Record3();
         for (var k in opt2) {
           options[k] = opt2[k];
         }
@@ -6011,7 +6011,7 @@ var require_core = __commonJS({
     }
     function ToLocalTime(date, calendar, timeZone) {
       var d = new Date(date), m2 = "get" + (timeZone || "");
-      return new Record4({
+      return new Record3({
         "[[weekday]]": d[m2 + "Day"](),
         "[[era]]": +(d[m2 + "FullYear"]() >= 0),
         "[[year]]": d[m2 + "FullYear"](),
@@ -6028,7 +6028,7 @@ var require_core = __commonJS({
       writable: true,
       configurable: true,
       value: function value() {
-        var prop = void 0, descs = new Record4(), props = ["locale", "calendar", "numberingSystem", "timeZone", "hour12", "weekday", "era", "year", "month", "day", "hour", "minute", "second", "timeZoneName"], internal3 = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
+        var prop = void 0, descs = new Record3(), props = ["locale", "calendar", "numberingSystem", "timeZone", "hour12", "weekday", "era", "year", "month", "day", "hour", "minute", "second", "timeZoneName"], internal3 = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
         if (!internal3 || !internal3["[[initializedDateTimeFormat]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.DateTimeFormat object.");
         for (var i2 = 0, max = props.length; i2 < max; i2++) {
           if (hop.call(internal3, prop = "[[" + props[i2] + "]]")) descs[props[i2]] = { value: internal3[prop], writable: true, configurable: true, enumerable: true };
@@ -7229,7 +7229,7 @@ var require_Reflect = __commonJS({
 var require_http_message_parser = __commonJS({
   "node_modules/http-message-parser/http-message-parser.js"(exports4, module) {
     var Buffer4 = (init_buffer(), __toCommonJS(buffer_exports)).Buffer;
-    function httpMessageParser2(message2) {
+    function httpMessageParser2(message) {
       const result2 = {
         httpVersion: null,
         statusCode: null,
@@ -7244,11 +7244,11 @@ var require_http_message_parser = __commonJS({
       var messageString = "";
       var headerNewlineIndex = 0;
       var fullBoundary = null;
-      if (httpMessageParser2._isBuffer(message2)) {
-        messageString = message2.toString();
-      } else if (typeof message2 === "string") {
-        messageString = message2;
-        message2 = httpMessageParser2._createBuffer(messageString);
+      if (httpMessageParser2._isBuffer(message)) {
+        messageString = message.toString();
+      } else if (typeof message === "string") {
+        messageString = message;
+        message = httpMessageParser2._createBuffer(messageString);
       } else {
         return result2;
       }
@@ -7257,8 +7257,8 @@ var require_http_message_parser = __commonJS({
         const firstNonWhitespaceRegex = /[\w-]+/gim;
         const firstNonWhitespaceIndex = messageString.search(firstNonWhitespaceRegex);
         if (firstNonWhitespaceIndex > 0) {
-          message2 = message2.slice(firstNonWhitespaceIndex, message2.length);
-          messageString = message2.toString();
+          message = message.slice(firstNonWhitespaceIndex, message.length);
+          messageString = message.toString();
         }
       })();
       (function() {
@@ -7304,7 +7304,7 @@ var require_http_message_parser = __commonJS({
       })();
       (function() {
         var start = headerNewlineIndex;
-        var end = message2.length;
+        var end = message.length;
         const firstBoundaryIndex = messageString.indexOf(fullBoundary);
         if (firstBoundaryIndex > -1) {
           start = headerNewlineIndex;
@@ -7359,7 +7359,7 @@ var require_http_message_parser = __commonJS({
                 result3.headers = headers;
                 var boundaryIndexes = [];
                 for (var j = 0; j >= 0; ) {
-                  j = message2.indexOf(fullBoundary, j);
+                  j = message.indexOf(fullBoundary, j);
                   if (j >= 0) {
                     boundaryIndexes.push(j);
                     j += fullBoundary.length;
@@ -7367,14 +7367,14 @@ var require_http_message_parser = __commonJS({
                 }
                 var boundaryNewlineIndexes = [];
                 boundaryIndexes.slice(0, boundaryIndexes.length - 1).forEach(function(m2, k) {
-                  const partBody = message2.slice(boundaryIndexes[k], boundaryIndexes[k + 1]).toString();
+                  const partBody = message.slice(boundaryIndexes[k], boundaryIndexes[k + 1]).toString();
                   var headerNewlineIndex2 = partBody.search(/\n\n|\r\n\r\n/gim) + 2;
                   headerNewlineIndex2 = boundaryIndexes[k] + headerNewlineIndex2;
                   boundaryNewlineIndexes.push(headerNewlineIndex2);
                 });
                 startOffset = boundaryNewlineIndexes[i2];
                 endOffset = boundaryIndexes[i2 + 1];
-                body2 = message2.slice(startOffset, endOffset);
+                body2 = message.slice(startOffset, endOffset);
               } else {
                 body2 = part;
               }
@@ -10278,14 +10278,14 @@ var RejectionCode = idl_exports.Variant({
 });
 
 // node_modules/azle/src/lib/stable/ic_apis/trap.ts
-function trap(message2) {
+function trap(message) {
   if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
     throw new Error("IC API not available");
   }
   if (globalThis._azleIcExperimental !== void 0) {
-    return globalThis._azleIcExperimental.trap(message2);
+    return globalThis._azleIcExperimental.trap(message);
   }
-  return globalThis._azleIcStable.trap(message2);
+  return globalThis._azleIcStable.trap(message);
 }
 
 // node_modules/azle/src/lib/stable/globals.ts
@@ -10463,8 +10463,8 @@ var argv = globalThis.argv;
 var execArgv = [];
 var version = "v16.8.0";
 var versions = {};
-var emitWarning = function(message2, type) {
-  console.warn((type ? type + ": " : "") + message2);
+var emitWarning = function(message, type) {
+  console.warn((type ? type + ": " : "") + message);
 };
 var binding = function(name) {
   unimplemented("binding");
@@ -10514,9 +10514,9 @@ var kill = noop;
 var exit = globalThis.exit;
 var openStdin = noop;
 var allowedNodeEnvironmentFlags = {};
-function assert2(condition, message2) {
+function assert2(condition, message) {
   if (!condition) {
-    throw new Error(message2 || "assertion error");
+    throw new Error(message || "assertion error");
   }
 }
 var features = {
@@ -12596,8 +12596,8 @@ ${" ".repeat(ctx.indentationLvl)}`;
         }
         ctx.indentationLvl -= 2;
       } catch (err3) {
-        const message2 = `<Inspection threw (${err3.message})>`;
-        str = `${s(`[${label}:`, sp)} ${message2}${s("]", sp)}`;
+        const message = `<Inspection threw (${err3.message})>`;
+        str = `${s(`[${label}:`, sp)} ${message}${s("]", sp)}`;
       }
     } else {
       str = ctx.stylize(`[${label}]`, sp);
@@ -12687,8 +12687,8 @@ function formatSpecialArray(ctx, value, recurseTimes, maxLength, output2, i2) {
       }
       const emptyItems = tmp - index;
       const ending = emptyItems > 1 ? "s" : "";
-      const message2 = `<${emptyItems} empty item${ending}>`;
-      output2.push(ctx.stylize(message2, "undefined"));
+      const message = `<${emptyItems} empty item${ending}>`;
+      output2.push(ctx.stylize(message, "undefined"));
       index = tmp;
       if (output2.length === maxLength) {
         break;
@@ -12701,8 +12701,8 @@ function formatSpecialArray(ctx, value, recurseTimes, maxLength, output2, i2) {
   if (output2.length !== maxLength) {
     if (remaining > 0) {
       const ending = remaining > 1 ? "s" : "";
-      const message2 = `<${remaining} empty item${ending}>`;
-      output2.push(ctx.stylize(message2, "undefined"));
+      const message = `<${remaining} empty item${ending}>`;
+      output2.push(ctx.stylize(message, "undefined"));
     }
   } else if (remaining > 0) {
     output2.push(`... ${remaining} more item${remaining > 1 ? "s" : ""}`);
@@ -13421,8 +13421,8 @@ var NodeErrorAbstraction = class extends Error {
    * @param {string} code 
    * @param {string} message 
    */
-  constructor(name, code, message2) {
-    super(message2);
+  constructor(name, code, message) {
+    super(message);
     /**
      * @type {string}
      */
@@ -13444,14 +13444,14 @@ var NodeSystemError = class extends NodeErrorAbstraction {
    * @param {string} msgPrefix 
    */
   constructor(key, context, msgPrefix) {
-    let message2 = `${msgPrefix}: ${context.syscall} returned ${context.code} (${context.message})`;
+    let message = `${msgPrefix}: ${context.syscall} returned ${context.code} (${context.message})`;
     if (context.path !== void 0) {
-      message2 += ` ${context.path}`;
+      message += ` ${context.path}`;
     }
     if (context.dest !== void 0) {
-      message2 += ` => ${context.dest}`;
+      message += ` => ${context.dest}`;
     }
-    super("SystemError", key, message2);
+    super("SystemError", key, message);
     Object.defineProperties(this, {
       [kIsNodeError]: {
         value: true,
@@ -13559,18 +13559,18 @@ var uvException = hideStackFrames(
    */
   function uvException2(ctx) {
     const { 0: code, 1: uvmsg } = uvErrmapGet(ctx.errno) || uvUnmappedError;
-    let message2 = `${code}: ${ctx.message || uvmsg}, ${ctx.syscall}`;
+    let message = `${code}: ${ctx.message || uvmsg}, ${ctx.syscall}`;
     let path2;
     let dest;
     if (ctx.path) {
       path2 = ctx.path.toString();
-      message2 += ` '${path2}'`;
+      message += ` '${path2}'`;
     }
     if (ctx.dest) {
       dest = ctx.dest.toString();
-      message2 += ` -> '${dest}'`;
+      message += ` -> '${dest}'`;
     }
-    const err3 = new Error(message2);
+    const err3 = new Error(message);
     for (const prop of Object.keys(ctx)) {
       if (prop === "message" || prop === "path" || prop === "dest") {
         continue;
@@ -31652,11 +31652,11 @@ function print3(...args2) {
 }
 
 // node_modules/azle/src/lib/experimental/ic/reject.ts
-function reject2(message2) {
+function reject2(message) {
   if (globalThis._azleIcExperimental === void 0) {
     return void 0;
   }
-  globalThis._azleIcExperimental.reject(message2);
+  globalThis._azleIcExperimental.reject(message);
 }
 
 // node_modules/azle/src/lib/experimental/ic/reject_code.ts
@@ -31773,11 +31773,11 @@ function time2() {
 }
 
 // node_modules/azle/src/lib/experimental/ic/trap.ts
-function trap2(message2) {
+function trap2(message) {
   if (globalThis._azleIcExperimental === void 0) {
     throw new Error();
   }
-  return globalThis._azleIcExperimental.trap(message2);
+  return globalThis._azleIcExperimental.trap(message);
 }
 
 // node_modules/azle/src/lib/experimental/ic/index.ts
@@ -32124,13 +32124,13 @@ if (globalThis._azleInsideCanister === true) {
   globalThis.process = {
     ...process_exports,
     stdout: {
-      write: (message2) => {
-        stdioWrite(message2);
+      write: (message) => {
+        stdioWrite(message);
       }
     },
     stderr: {
-      write: (message2) => {
-        stdioWrite(message2);
+      write: (message) => {
+        stdioWrite(message);
       }
     }
   };
@@ -32178,10 +32178,10 @@ if (globalThis._azleInsideCanister === true) {
   global.Intl = require_intl();
   require_en();
 }
-function stdioWrite(message2) {
+function stdioWrite(message) {
   const ansiEscapeRegex = /\u001b\[.*?m/g;
   const newlineRegex = /\n/g;
-  const messageAnsiCodesRemoved = message2.replace(ansiEscapeRegex, "").replace(newlineRegex, "");
+  const messageAnsiCodesRemoved = message.replace(ansiEscapeRegex, "").replace(newlineRegex, "");
   console.info(messageAnsiCodesRemoved);
 }
 
@@ -33474,8 +33474,8 @@ function isError3(error2, code) {
 function isCallException(error2) {
   return isError3(error2, "CALL_EXCEPTION");
 }
-function makeError(message2, code, info) {
-  let shortMessage = message2;
+function makeError(message, code, info) {
+  let shortMessage = message;
   {
     const details = [];
     if (info) {
@@ -33493,20 +33493,20 @@ function makeError(message2, code, info) {
     details.push(`code=${code}`);
     details.push(`version=${version2}`);
     if (details.length) {
-      message2 += " (" + details.join(", ") + ")";
+      message += " (" + details.join(", ") + ")";
     }
   }
   let error2;
   switch (code) {
     case "INVALID_ARGUMENT":
-      error2 = new TypeError(message2);
+      error2 = new TypeError(message);
       break;
     case "NUMERIC_FAULT":
     case "BUFFER_OVERRUN":
-      error2 = new RangeError(message2);
+      error2 = new RangeError(message);
       break;
     default:
-      error2 = new Error(message2);
+      error2 = new Error(message);
   }
   defineProperties(error2, { code });
   if (info) {
@@ -33517,26 +33517,26 @@ function makeError(message2, code, info) {
   }
   return error2;
 }
-function assert4(check, message2, code, info) {
+function assert4(check, message, code, info) {
   if (!check) {
-    throw makeError(message2, code, info);
+    throw makeError(message, code, info);
   }
 }
-function assertArgument(check, message2, name, value) {
-  assert4(check, message2, "INVALID_ARGUMENT", { argument: name, value });
+function assertArgument(check, message, name, value) {
+  assert4(check, message, "INVALID_ARGUMENT", { argument: name, value });
 }
-function assertArgumentCount(count, expectedCount, message2) {
-  if (message2 == null) {
-    message2 = "";
+function assertArgumentCount(count, expectedCount, message) {
+  if (message == null) {
+    message = "";
   }
-  if (message2) {
-    message2 = ": " + message2;
+  if (message) {
+    message = ": " + message;
   }
-  assert4(count >= expectedCount, "missing argument" + message2, "MISSING_ARGUMENT", {
+  assert4(count >= expectedCount, "missing argument" + message, "MISSING_ARGUMENT", {
     count,
     expectedCount
   });
-  assert4(count <= expectedCount, "too many arguments" + message2, "UNEXPECTED_ARGUMENT", {
+  assert4(count <= expectedCount, "too many arguments" + message, "UNEXPECTED_ARGUMENT", {
     count,
     expectedCount
   });
@@ -34855,16 +34855,16 @@ var _FetchResponse = class _FetchResponse {
    *  an error status code (i.e. 599) and %%message%% with an
    *  optional %%error%%.
    */
-  makeServerError(message2, error2) {
+  makeServerError(message, error2) {
     let statusMessage;
-    if (!message2) {
-      message2 = `${this.statusCode} ${this.statusMessage}`;
-      statusMessage = `CLIENT ESCALATED SERVER ERROR (${message2})`;
+    if (!message) {
+      message = `${this.statusCode} ${this.statusMessage}`;
+      statusMessage = `CLIENT ESCALATED SERVER ERROR (${message})`;
     } else {
-      statusMessage = `CLIENT ESCALATED SERVER ERROR (${this.statusCode} ${this.statusMessage}; ${message2})`;
+      statusMessage = `CLIENT ESCALATED SERVER ERROR (${this.statusCode} ${this.statusMessage}; ${message})`;
     }
     const response = new _FetchResponse(599, statusMessage, this.headers, this.body, __privateGet(this, _request) || void 0);
-    __privateSet(response, _error, { message: message2, error: error2 });
+    __privateSet(response, _error, { message, error: error2 });
     return response;
   }
   /**
@@ -34872,13 +34872,13 @@ var _FetchResponse = class _FetchResponse {
    *  call, causes the request to retry as if throttled for %%stall%%
    *  milliseconds.
    */
-  throwThrottleError(message2, stall5) {
+  throwThrottleError(message, stall5) {
     if (stall5 == null) {
       stall5 = -1;
     } else {
       assertArgument(Number.isInteger(stall5) && stall5 >= 0, "invalid stall timeout", "stall", stall5);
     }
-    const error2 = new Error(message2 || "throttling requests");
+    const error2 = new Error(message || "throttling requests");
     defineProperties(error2, { stall: stall5, throttle: true });
     throw error2;
   }
@@ -34913,9 +34913,9 @@ var _FetchResponse = class _FetchResponse {
     if (this.ok()) {
       return;
     }
-    let { message: message2, error: error2 } = __privateGet(this, _error);
-    if (message2 === "") {
-      message2 = `server response ${this.statusCode} ${this.statusMessage}`;
+    let { message, error: error2 } = __privateGet(this, _error);
+    if (message === "") {
+      message = `server response ${this.statusCode} ${this.statusMessage}`;
     }
     let requestUrl = null;
     if (this.request) {
@@ -34928,7 +34928,7 @@ var _FetchResponse = class _FetchResponse {
       }
     } catch (e3) {
     }
-    assert4(false, message2, "SERVER_ERROR", {
+    assert4(false, message, "SERVER_ERROR", {
       request: this.request || "unknown request",
       response: this,
       error: error2,
@@ -35919,8 +35919,8 @@ var Coder = class {
       dynamic: "boolean"
     });
   }
-  _throwError(message2, value) {
-    assertArgument(false, message2, this.localName, value);
+  _throwError(message, value) {
+    assertArgument(false, message, this.localName, value);
   }
 };
 var _data, _dataLength, _Writer_instances, writeData_fn;
@@ -36243,7 +36243,7 @@ var HMAC = class extends Hash2 {
     this.iHash.destroy();
   }
 };
-var hmac = (hash2, key, message2) => new HMAC(hash2, key).update(message2).digest();
+var hmac = (hash2, key, message) => new HMAC(hash2, key).update(message).digest();
 hmac.create = (hash2, key) => new HMAC(hash2, key);
 
 // node_modules/ethers/node_modules/@noble/hashes/esm/pbkdf2.js
@@ -39218,8 +39218,8 @@ var _Signature = class _Signature {
    *  If %%sig%% is a string, it is parsed.
    */
   static from(sig) {
-    function assertError(check, message2) {
-      assertArgument(check, message2, "signature", sig);
+    function assertError(check, message) {
+      assertArgument(check, message, "signature", sig);
     }
     ;
     if (sig == null) {
@@ -42636,18 +42636,18 @@ getSerialized_fn = function(signed2, sidecar) {
 var Transaction = _Transaction;
 
 // node_modules/ethers/lib.esm/hash/message.js
-function hashMessage(message2) {
-  if (typeof message2 === "string") {
-    message2 = toUtf8Bytes(message2);
+function hashMessage(message) {
+  if (typeof message === "string") {
+    message = toUtf8Bytes(message);
   }
   return keccak256(concat2([
     toUtf8Bytes(MessagePrefix),
-    toUtf8Bytes(String(message2.length)),
-    message2
+    toUtf8Bytes(String(message.length)),
+    message
   ]));
 }
-function verifyMessage(message2, sig) {
-  const digest = hashMessage(message2);
+function verifyMessage(message, sig) {
+  const digest = hashMessage(message);
   return recoverAddress(digest, sig);
 }
 
@@ -43344,9 +43344,9 @@ subTokenString_fn = function(from = 0, to = 0) {
 var TokenString = _TokenString;
 function lex(text3) {
   const tokens = [];
-  const throwError2 = (message2) => {
+  const throwError2 = (message) => {
     const token = offset < text3.length ? JSON.stringify(text3[offset]) : "$EOI";
-    throw new Error(`invalid token ${token} at ${offset}: ${message2}`);
+    throw new Error(`invalid token ${token} at ${offset}: ${message}`);
   };
   let brackets = [];
   let commas = [];
@@ -44479,19 +44479,19 @@ var paramTypeNumber = new RegExp(/^(u?int)([0-9]*)$/);
 var defaultCoder = null;
 var defaultMaxInflation = 1024;
 function getBuiltinCallException(action, tx, data, abiCoder) {
-  let message2 = "missing revert data";
+  let message = "missing revert data";
   let reason = null;
   const invocation = null;
   let revert = null;
   if (data) {
-    message2 = "execution reverted";
+    message = "execution reverted";
     const bytes3 = getBytes(data);
     data = hexlify(data);
     if (bytes3.length === 0) {
-      message2 += " (no data present; likely require(false) occurred";
+      message += " (no data present; likely require(false) occurred";
       reason = "require(false)";
     } else if (bytes3.length % 32 !== 4) {
-      message2 += " (could not decode reason; invalid data length)";
+      message += " (could not decode reason; invalid data length)";
     } else if (hexlify(bytes3.slice(0, 4)) === "0x08c379a0") {
       try {
         reason = abiCoder.decode(["string"], bytes3.slice(4))[0];
@@ -44500,9 +44500,9 @@ function getBuiltinCallException(action, tx, data, abiCoder) {
           name: "Error",
           args: [reason]
         };
-        message2 += `: ${JSON.stringify(reason)}`;
+        message += `: ${JSON.stringify(reason)}`;
       } catch (error2) {
-        message2 += " (could not decode reason; invalid string data)";
+        message += " (could not decode reason; invalid string data)";
       }
     } else if (hexlify(bytes3.slice(0, 4)) === "0x4e487b71") {
       try {
@@ -44513,12 +44513,12 @@ function getBuiltinCallException(action, tx, data, abiCoder) {
           args: [code]
         };
         reason = `Panic due to ${PanicReasons.get(code) || "UNKNOWN"}(${code})`;
-        message2 += `: ${reason}`;
+        message += `: ${reason}`;
       } catch (error2) {
-        message2 += " (could not decode panic code)";
+        message += " (could not decode panic code)";
       }
     } else {
-      message2 += " (unknown custom error)";
+      message += " (unknown custom error)";
     }
   }
   const transaction = {
@@ -44528,7 +44528,7 @@ function getBuiltinCallException(action, tx, data, abiCoder) {
   if (tx.from) {
     transaction.from = getAddress(tx.from);
   }
-  return makeError(message2, "CALL_EXCEPTION", {
+  return makeError(message, "CALL_EXCEPTION", {
     action,
     data,
     reason,
@@ -44813,8 +44813,8 @@ var BuiltinErrors = {
     signature: "Error(string)",
     name: "Error",
     inputs: ["string"],
-    reason: (message2) => {
-      return `reverted with reason string ${JSON.stringify(message2)}`;
+    reason: (message) => {
+      return `reverted with reason string ${JSON.stringify(message)}`;
     }
   },
   "0x4e487b71": {
@@ -45233,16 +45233,16 @@ var _Interface = class _Interface {
       assertArgument(f3, "unknown function", "fragment", fragment);
       fragment = f3;
     }
-    let message2 = "invalid length for result data";
+    let message = "invalid length for result data";
     const bytes3 = getBytesCopy(data);
     if (bytes3.length % 32 === 0) {
       try {
         return __privateGet(this, _abiCoder).decode(fragment.outputs, bytes3);
       } catch (error2) {
-        message2 = "could not decode result data";
+        message = "could not decode result data";
       }
     }
-    assert4(false, message2, "BAD_DATA", {
+    assert4(false, message, "BAD_DATA", {
       value: hexlify(bytes3),
       info: { method: fragment.name, signature: fragment.format() }
     });
@@ -48575,8 +48575,8 @@ function object(format3, altNames) {
           result2[key] = nv;
         }
       } catch (error2) {
-        const message2 = error2 instanceof Error ? error2.message : "not-an-error";
-        assert4(false, `invalid value for value.${key} (${message2})`, "BAD_DATA", { value });
+        const message = error2 instanceof Error ? error2.message : "not-an-error";
+        assert4(false, `invalid value for value.${key} (${message})`, "BAD_DATA", { value });
       }
     }
     return result2;
@@ -51015,7 +51015,7 @@ var _VoidSigner = class _VoidSigner extends AbstractSigner {
   async signTransaction(tx) {
     __privateMethod(this, _VoidSigner_instances, throwUnsupported_fn).call(this, "transactions", "signTransaction");
   }
-  async signMessage(message2) {
+  async signMessage(message) {
     __privateMethod(this, _VoidSigner_instances, throwUnsupported_fn).call(this, "messages", "signMessage");
   }
   async signTypedData(domain3, types, value) {
@@ -51358,9 +51358,9 @@ var JsonRpcSigner = class extends AbstractSigner {
     return await this.provider.send("eth_signTransaction", [hexTx]);
   }
   async signMessage(_message) {
-    const message2 = typeof _message === "string" ? toUtf8Bytes(_message) : _message;
+    const message = typeof _message === "string" ? toUtf8Bytes(_message) : _message;
     return await this.provider.send("personal_sign", [
-      hexlify(message2),
+      hexlify(message),
       this.address.toLowerCase()
     ]);
   }
@@ -51385,10 +51385,10 @@ var JsonRpcSigner = class extends AbstractSigner {
   }
   // https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
   async _legacySignMessage(_message) {
-    const message2 = typeof _message === "string" ? toUtf8Bytes(_message) : _message;
+    const message = typeof _message === "string" ? toUtf8Bytes(_message) : _message;
     return await this.provider.send("eth_sign", [
       this.address.toLowerCase(),
-      hexlify(message2)
+      hexlify(message)
     ]);
   }
 };
@@ -51742,7 +51742,7 @@ var JsonRpcApiProvider = class extends AbstractProvider {
       e3.info = { error: error2, payload };
       return e3;
     }
-    const message2 = JSON.stringify(spelunkMessage(error2));
+    const message = JSON.stringify(spelunkMessage(error2));
     if (typeof error2.message === "string" && error2.message.match(/user denied|ethers-user-denied/i)) {
       const actionMap = {
         eth_sign: "signMessage",
@@ -51761,26 +51761,26 @@ var JsonRpcApiProvider = class extends AbstractProvider {
     }
     if (method === "eth_sendRawTransaction" || method === "eth_sendTransaction") {
       const transaction = payload.params[0];
-      if (message2.match(/insufficient funds|base fee exceeds gas limit/i)) {
+      if (message.match(/insufficient funds|base fee exceeds gas limit/i)) {
         return makeError("insufficient funds for intrinsic transaction cost", "INSUFFICIENT_FUNDS", {
           transaction,
           info: { error: error2 }
         });
       }
-      if (message2.match(/nonce/i) && message2.match(/too low/i)) {
+      if (message.match(/nonce/i) && message.match(/too low/i)) {
         return makeError("nonce has already been used", "NONCE_EXPIRED", { transaction, info: { error: error2 } });
       }
-      if (message2.match(/replacement transaction/i) && message2.match(/underpriced/i)) {
+      if (message.match(/replacement transaction/i) && message.match(/underpriced/i)) {
         return makeError("replacement fee too low", "REPLACEMENT_UNDERPRICED", { transaction, info: { error: error2 } });
       }
-      if (message2.match(/only replay-protected/i)) {
+      if (message.match(/only replay-protected/i)) {
         return makeError("legacy pre-eip-155 transactions not supported", "UNSUPPORTED_OPERATION", {
           operation: method,
           info: { transaction, info: { error: error2 } }
         });
       }
     }
-    let unsupported = !!message2.match(/the method .* does not exist/i);
+    let unsupported = !!message.match(/the method .* does not exist/i);
     if (!unsupported) {
       if (error2 && error2.details && error2.details.startsWith("Unauthorized method:")) {
         unsupported = true;
@@ -52599,28 +52599,28 @@ var EtherscanProvider = class extends AbstractProvider {
    *  Throws the normalized Etherscan error.
    */
   _checkError(req, error2, transaction) {
-    let message2 = "";
+    let message = "";
     if (isError3(error2, "SERVER_ERROR")) {
       try {
-        message2 = error2.info.result.error.message;
+        message = error2.info.result.error.message;
       } catch (e3) {
       }
-      if (!message2) {
+      if (!message) {
         try {
-          message2 = error2.info.message;
+          message = error2.info.message;
         } catch (e3) {
         }
       }
     }
     if (req.method === "estimateGas") {
-      if (!message2.match(/revert/i) && message2.match(/insufficient funds/i)) {
+      if (!message.match(/revert/i) && message.match(/insufficient funds/i)) {
         assert4(false, "insufficient funds", "INSUFFICIENT_FUNDS", {
           transaction: req.transaction
         });
       }
     }
     if (req.method === "call" || req.method === "estimateGas") {
-      if (message2.match(/execution reverted/i)) {
+      if (message.match(/execution reverted/i)) {
         let data = "";
         try {
           data = error2.info.result.error.data;
@@ -52631,20 +52631,20 @@ var EtherscanProvider = class extends AbstractProvider {
         throw e3;
       }
     }
-    if (message2) {
+    if (message) {
       if (req.method === "broadcastTransaction") {
         const transaction2 = Transaction.from(req.signedTransaction);
-        if (message2.match(/replacement/i) && message2.match(/underpriced/i)) {
+        if (message.match(/replacement/i) && message.match(/underpriced/i)) {
           assert4(false, "replacement fee too low", "REPLACEMENT_UNDERPRICED", {
             transaction: transaction2
           });
         }
-        if (message2.match(/insufficient funds/)) {
+        if (message.match(/insufficient funds/)) {
           assert4(false, "insufficient funds for intrinsic transaction cost", "INSUFFICIENT_FUNDS", {
             transaction: transaction2
           });
         }
-        if (message2.match(/same hash was already imported|transaction nonce is too low|nonce too low/)) {
+        if (message.match(/same hash was already imported|transaction nonce is too low|nonce too low/)) {
           assert4(false, "nonce has already been used", "NONCE_EXPIRED", {
             transaction: transaction2
           });
@@ -52941,17 +52941,17 @@ var SocketSubscriber = class {
   /**
    *  @_ignore:
    */
-  _handleMessage(message2) {
+  _handleMessage(message) {
     if (__privateGet(this, _filterId) == null) {
       return;
     }
     if (__privateGet(this, _paused) === null) {
       let emitPromise = __privateGet(this, _emitPromise);
       if (emitPromise == null) {
-        emitPromise = this._emit(__privateGet(this, _provider5), message2);
+        emitPromise = this._emit(__privateGet(this, _provider5), message);
       } else {
         emitPromise = emitPromise.then(async () => {
-          await this._emit(__privateGet(this, _provider5), message2);
+          await this._emit(__privateGet(this, _provider5), message);
         });
       }
       __privateSet(this, _emitPromise, emitPromise.then(() => {
@@ -52965,7 +52965,7 @@ var SocketSubscriber = class {
    *  Sub-classes **must** override this to emit the events on the
    *  provider.
    */
-  async _emit(provider, message2) {
+  async _emit(provider, message) {
     throw new Error("sub-classes must implemente this; _emit");
   }
 };
@@ -52981,8 +52981,8 @@ var SocketBlockSubscriber = class extends SocketSubscriber {
   constructor(provider) {
     super(provider, ["newHeads"]);
   }
-  async _emit(provider, message2) {
-    provider.emit("block", parseInt(message2.number));
+  async _emit(provider, message) {
+    provider.emit("block", parseInt(message.number));
   }
 };
 var SocketPendingSubscriber = class extends SocketSubscriber {
@@ -52992,8 +52992,8 @@ var SocketPendingSubscriber = class extends SocketSubscriber {
   constructor(provider) {
     super(provider, ["newPendingTransactions"]);
   }
-  async _emit(provider, message2) {
-    provider.emit("pending", message2);
+  async _emit(provider, message) {
+    provider.emit("pending", message);
   }
 };
 var _logFilter;
@@ -53012,8 +53012,8 @@ var SocketEventSubscriber = class extends SocketSubscriber {
   get logFilter() {
     return JSON.parse(__privateGet(this, _logFilter));
   }
-  async _emit(provider, message2) {
-    provider.emit(this.logFilter, provider._wrapLog(message2, provider._network));
+  async _emit(provider, message) {
+    provider.emit(this.logFilter, provider._wrapLog(message, provider._network));
   }
 };
 _logFilter = new WeakMap();
@@ -53076,8 +53076,8 @@ var SocketProvider = class extends JsonRpcApiProvider {
     __privateGet(this, _subs2).set(filterId, subscriber);
     const pending = __privateGet(this, _pending).get(filterId);
     if (pending) {
-      for (const message2 of pending) {
-        subscriber._handleMessage(message2);
+      for (const message of pending) {
+        subscriber._handleMessage(message);
       }
       __privateGet(this, _pending).delete(filterId);
     }
@@ -53109,8 +53109,8 @@ var SocketProvider = class extends JsonRpcApiProvider {
    *  Sub-classes **must** call this with messages received over their
    *  transport to be processed and dispatched.
    */
-  async _processMessage(message2) {
-    const result2 = JSON.parse(message2);
+  async _processMessage(message) {
+    const result2 = JSON.parse(message);
     if (result2 && typeof result2 === "object" && "id" in result2) {
       const callback = __privateGet(this, _callbacks).get(result2.id);
       if (callback == null) {
@@ -53147,7 +53147,7 @@ var SocketProvider = class extends JsonRpcApiProvider {
    *  Sub-classes **must** override this to send %%message%% over their
    *  transport.
    */
-  async _write(message2) {
+  async _write(message) {
     throw new Error("sub-classes must override this");
   }
 };
@@ -53182,8 +53182,8 @@ var WebSocketProvider = class extends SocketProvider {
         console.log("failed to start WebsocketProvider", error2);
       }
     };
-    this.websocket.onmessage = (message2) => {
-      this._processMessage(message2.data);
+    this.websocket.onmessage = (message) => {
+      this._processMessage(message.data);
     };
   }
   get websocket() {
@@ -53192,8 +53192,8 @@ var WebSocketProvider = class extends SocketProvider {
     }
     return __privateGet(this, _websocket);
   }
-  async _write(message2) {
-    this.websocket.send(message2);
+  async _write(message) {
+    this.websocket.send(message);
   }
   async destroy() {
     if (__privateGet(this, _websocket) != null) {
@@ -54160,8 +54160,8 @@ var _NonceManager = class _NonceManager extends AbstractSigner {
   signTransaction(tx) {
     return this.signer.signTransaction(tx);
   }
-  signMessage(message2) {
-    return this.signer.signMessage(message2);
+  signMessage(message) {
+    return this.signer.signMessage(message);
   }
   signTypedData(domain3, types, value) {
     return this.signer.signTypedData(domain3, types, value);
@@ -54404,16 +54404,16 @@ var _BaseWallet = class _BaseWallet extends AbstractSigner {
     btx.signature = this.signingKey.sign(btx.unsignedHash);
     return btx.serialized;
   }
-  async signMessage(message2) {
-    return this.signMessageSync(message2);
+  async signMessage(message) {
+    return this.signMessageSync(message);
   }
   // @TODO: Add a secialized signTx and signTyped sync that enforces
   // all parameters are known?
   /**
    *  Returns the signature for %%message%% signed with this wallet.
    */
-  signMessageSync(message2) {
-    return this.signingKey.sign(hashMessage(message2)).serialized;
+  signMessageSync(message) {
+    return this.signingKey.sign(hashMessage(message)).serialized;
   }
   async signTypedData(domain3, types, value) {
     const populated = await TypedDataEncoder.resolveNames(domain3, types, value, async (name) => {
@@ -56828,18 +56828,56 @@ var DidVisitor = class extends idl_exports.Visitor {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  default: () => src_default
+  authorizeInstitution: () => authorizeInstitution,
+  default: () => src_default,
+  derivation_origin: () => derivation_origin,
+  get_credential: () => get_credential,
+  issueCredential: () => issueCredential,
+  prepare_credential: () => prepare_credential
 });
-var message = "Hello, world!";
-var getMessage = () => {
-  return message;
+var Credential = Record2({
+  student: Principal3,
+  institution: Principal3,
+  degree: text,
+  issueDate: nat64
+});
+var credentials = StableBTreeMap(0);
+var credentialIdCounter = 1n;
+var authorizedInstitutions = /* @__PURE__ */ new Set();
+var vc_consent_message = () => {
+  return "I hereby consent to issue a verifiable academic credential.";
 };
-var fetchMyName = () => {
-  return "Hamza your are becoming ICP developer!";
+var derivation_origin = () => {
+  return ic.caller().toText();
+};
+var prepare_credential = async (request) => {
+  return `Prepared credential for request: ${request}`;
+};
+var get_credential = async (context) => {
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+};
+var issueCredential = async ({ student, institution, degree, issueDate }) => {
+  const id4 = credentialIdCounter;
+  credentialIdCounter += 1n;
+  credentials.insert(id4, {
+    student,
+    institution,
+    degree,
+    issueDate
+  });
+  return id4;
+};
+var authorizeInstitution = async (institution) => {
+  authorizedInstitutions.add(institution);
+  return "Authorization of Institution successful!";
 };
 var src_default = Canister({
-  getMessage: query([], text, getMessage),
-  testFunction: query([], text, fetchMyName)
+  vc_consent_message: query([], text, vc_consent_message),
+  derivation_origin: query([], text, derivation_origin),
+  prepare_credential: update([text], text, prepare_credential),
+  get_credential: update([text], text, get_credential),
+  issueCredential: update([Credential], nat64, issueCredential),
+  authorizeInstitution: update([Principal3], text, authorizeInstitution)
 });
 
 // <stdin>
