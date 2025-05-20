@@ -19,7 +19,7 @@ The **Decentralized Academic Credentials** platform is a blockchain-based soluti
 ### Getting Started
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-repo/decentralized-academic-credentials.git
+   git clone https://github.com/Hamza1610/decentralized-academic-credentials.git
    cd decentralized-academic-credentials
    ```
 
