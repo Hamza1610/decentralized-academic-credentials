@@ -1,0 +1,15 @@
+{
+    "canisters": {
+        "backend": {
+            "type": "azle",
+            "main": "src/index.ts",
+            "custom": {
+                "experimental": true
+            },
+            "declarations": {
+                "output": "test/dfx_generated/backend",
+                "node_compatibility": true
+            }
+        }
+    }
+}
