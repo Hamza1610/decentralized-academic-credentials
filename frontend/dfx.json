@@ -1,0 +1,22 @@
+{
+  "canisters": {
+    "frontend": {
+      "source": [
+        "dist"
+      ],
+      "type": "assets",
+      "declarations": {
+        "output": "interfaces/frontend",
+        "node_compatibility": true
+    }
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
