@@ -1,97 +1,95 @@
-# Azle Hello World
+# Backend: Decentralized Academic Credentials Canister
 
-- [Installation](#installation)
-- [Deployment](#deployment)
-- [Testing](#testing)
+## Overview
+The backend of the Decentralized Academic Credentials platform is a canister (smart contract) built using Azle, a TypeScript CDK for the Internet Computer Protocol (ICP). It handles credential issuance, storage, and verification, implementing ICP's verifiable credentials (VC) standard for secure and tamper-proof academic credentials.
 
-Azle helps you to build secure decentralized/replicated servers in TypeScript or JavaScript on [ICP](https://internetcomputer.org/). The current replication factor is [13-40 times](https://dashboard.internetcomputer.org/subnets).
+### Features
+- **Credential Issuance**: Authorized institutions can issue credentials using the `issueCredential` method.
+- **Credential Storage**: Credentials are stored on-chain using `StableBTreeMap` for persistence.
+- **Credential Retrieval**: The `getCredential` method allows retrieval of credential details.
+- **VC Issuer API**: Implements methods like `vc_consent_message`, `derivation_origin`, `prepare_credential`, and `get_credential` for VC compliance.
+- **Authorization**: Only authorized institutions can issue credentials, managed via the `authorizeInstitution` method.
 
-Azle stable mode is continuously subjected to [intense scrutiny and testing](https://github.com/demergent-labs/azle/actions), however it does not yet have multiple independent security reviews/audits.
+### Data Structures
+- **Credential**: Stores student principal, institution principal, degree, and issue date.
+  ```typescript
+  type Credential = {
+    student: Principal;
+    institution: Principal;
+    degree: text;
+    issueDate: nat64;
+  };
+  ```
+- **StableBTreeMap**: Used for persistent storage of credentials, authorized institutions, and the next credential ID.
 
-## Stable Mode
+### Canister Methods
+Below is a detailed description of each method in the canister:
 
-Azle runs in stable mode by default.
+| **Method**               | **Type** | **Parameters**                        | **Return Type** | **Description**                                                                 |
+|--------------------------|----------|---------------------------------------|-----------------|---------------------------------------------------------------------------------|
+| `vc_consent_message`     | Query    | None                                  | `text`          | Returns a consent message for user approval before issuing a credential.         |
+| `derivation_origin`      | Query    | None                                  | `text`          | Provides the canister’s URL for principal derivation.                            |
+| `prepare_credential`     | Update   | `request: text`                       | `text`          | Prepares the credential for issuance and updates certified data.                 |
+| `get_credential`         | Update   | `context: text`                       | `text`          | Issues the signed credential in JWT format.                                      |
+| `issueCredential`        | Update   | `institution: Principal`, `student: Principal`, `degree: text`, `issueDate: nat64` | `nat64` | Issues a new credential and returns its ID. Only callable by authorized institutions. |
+| `getCredential`          | Query    | `id: nat64`                           | `?Credential`   | Retrieves a credential by its ID.                                                |
+| `authorizeInstitution`   | Update   | `institution: Principal`              | `Void`          | Authorizes an institution to issue credentials. Only callable by the canister owner. |
 
-This mode is intended for production use after Azle's 1.0 release. Its focus is on API and runtime stability, security, performance, TypeScript and JavaScript language support, the ICP APIs, and Candid remote procedure calls (RPC). There is minimal support for the Node.js standard library, npm ecosystem, and HTTP server functionality.
+### Role-Based Integration
+The canister enforces role-based access control:
+- **Institutions**:
+  - **Role**: Issuers of przedmioty credentials.
+  - **Permissions**: Can call `issueCredential` after being authorized.
+  - **Implementation**: The canister checks if the caller's principal is in `authorizedInstitutions` before allowing credential issuance.
+- **Students**:
+  - **Role**: Recipients of credentials.
+  - **Permissions**: Can view their credentials using `getCredential`.
+  - **Implementation**: No special permissions needed; credentials are publicly queryable by ID.
+- **Verifiers**:
+  - **Role**: Third parties verifying credentials.
+  - **Permissions**: Can use `get_credential` to retrieve and verify the JWT.
+  - **Implementation**: Public method, no authentication required for verification.
 
-## Installation
+This ensures that only trusted entities can issue credentials, while maintaining open access for verification, aligning with the decentralized nature of the platform.
 
-> Windows is only supported through a Linux virtual environment of some kind, such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+### Setup and Deployment
+1. **Navigate to the Backend Directory**:
+   ```bash
+   cd backend
+   ```
 
-You will need [Node.js 22](#nodejs-22) and [dfx](#dfx) to develop ICP applications with Azle:
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-### Node.js
+3. **Start Local Replica**:
+   ```bash
+   dfx start --background
+   ```
 
-It's recommended to use nvm to install the latest LTS version of Node.js:
+4. **Deploy the Canister**:
+   ```bash
+   dfx deploy
+   ```
 
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-```
+5. **Interact with the Canister**:
+   - Use DFX to call methods:
+     ```bash
+     dfx canister call academic-credentials issueCredential '(principal "aaaaa-...", principal "bbbbb-...", "Bachelor of Science", 1640995200000)'
+     ```
 
-Restart your terminal and then run:
+### Security Measures
+- **Authorization Checks**: Ensures only authorized institutions can issue credentials.
+- **Principal Validation**: Uses Internet Identity principals to identify users.
+- **Immutable Storage**: Credentials are stored on-chain, preventing tampering.
 
-```bash
-nvm install --lts
-```
+### Practical Usage
+- **Issuing Credentials**: Institutions use the frontend or directly call `issueCredential` with the required parameters.
+- **Viewing Credentials**: Students query `getCredential` with their credential ID.
+- **Verifying Credentials**: Verifiers use the VC issuer API to retrieve and verify the JWT.
 
-Check that the installation went smoothly by looking for clean output from the following command:
-
-```bash
-node --version
-```
-
-### dfx
-
-Install the dfx command line tools for managing ICP applications:
-
-```bash
-DFX_VERSION=0.25.0 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
-```
-
-Check that the installation went smoothly by looking for clean output from the following command:
-
-```bash
-dfx --version
-```
-
-## Deployment
-
-To create and deploy a simple sample application called `hello_world`:
-
-```bash
-# create a new default project called hello_world
-npx azle new hello_world
-cd hello_world
-```
-
-```bash
-# install all npm dependencies including azle
-npm install
-```
-
-```bash
-# start up a local ICP replica
-dfx start --clean
-```
-
-In a separate terminal in the `hello_world` directory:
-
-```bash
-# deploy your canister
-dfx deploy
-```
-
-## Testing
-
-If you would like to run the included test suite:
-
-```bash
-# start up a local ICP replica
-dfx start --clean
-```
-
-In a separate terminal in the `hello_world` directory:
-
-```bash
-npm test
-```
+### Troubleshooting
+- **Unauthorized Errors**: Ensure the institution is authorized by checking `authorizedInstitutions`.
+- **Storage Issues**: Verify that `StableBTreeMap` is correctly initialized and used.
+- **VC API Compliance**: Ensure all VC issuer methods are implemented as per the [ICP VC Specification](https://github.com/dfinity/internet-identity/blob/main/docs/vc-spec.md).
