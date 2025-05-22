@@ -48349,8 +48349,8 @@ var _EnsResolver = class _EnsResolver {
           case "erc1155": {
             const selector = scheme === "erc721" ? "tokenURI(uint256)" : "uri(uint256)";
             linkage.push({ type: scheme, value: avatar });
-            const owner = await this.getAddress();
-            if (owner == null) {
+            const owner2 = await this.getAddress();
+            if (owner2 == null) {
               linkage.push({ type: "!owner", value: "" });
               return { url: null, linkage };
             }
@@ -48370,13 +48370,13 @@ var _EnsResolver = class _EnsResolver {
             ], this.provider);
             if (scheme === "erc721") {
               const tokenOwner = await contract.ownerOf(tokenId);
-              if (owner !== tokenOwner) {
+              if (owner2 !== tokenOwner) {
                 linkage.push({ type: "!owner", value: tokenOwner });
                 return { url: null, linkage };
               }
               linkage.push({ type: "owner", value: tokenOwner });
             } else if (scheme === "erc1155") {
-              const balance = await contract.balanceOf(owner, tokenId);
+              const balance = await contract.balanceOf(owner2, tokenId);
               if (!balance) {
                 linkage.push({ type: "!balance", value: "0" });
                 return { url: null, linkage };
@@ -51811,12 +51811,12 @@ var JsonRpcApiProvider = class extends AbstractProvider {
     if (this.destroyed) {
       return Promise.reject(makeError("provider destroyed; cancelled request", "UNSUPPORTED_OPERATION", { operation: method }));
     }
-    const id4 = __privateWrapper(this, _nextId)._++;
+    const id5 = __privateWrapper(this, _nextId)._++;
     const promise = new Promise((resolve3, reject3) => {
       __privateGet(this, _payloads).push({
         resolve: resolve3,
         reject: reject3,
-        payload: { method, params, id: id4, jsonrpc: "2.0" }
+        payload: { method, params, id: id5, jsonrpc: "2.0" }
       });
     });
     __privateMethod(this, _JsonRpcApiProvider_instances, scheduleDrain_fn).call(this);
@@ -52487,10 +52487,10 @@ var EtherscanProvider = class extends AbstractProvider {
    *  If %%post%%, the request is made as a POST request.
    */
   async fetch(module, params, post) {
-    const id4 = nextId++;
+    const id5 = nextId++;
     const url2 = post ? this.getPostUrl() : this.getUrl(module, params);
     const payload = post ? this.getPostData(module, params) : null;
-    this.emit("debug", { action: "sendRequest", id: id4, url: url2, payload });
+    this.emit("debug", { action: "sendRequest", id: id5, url: url2, payload });
     const request = new FetchRequest(url2);
     request.setThrottleParams({ slotInterval: 1e3 });
     request.retryFunc = (req, resp, attempt) => {
@@ -52504,12 +52504,12 @@ var EtherscanProvider = class extends AbstractProvider {
       const throttle = (typeof result3.result === "string" ? result3.result : "").toLowerCase().indexOf("rate limit") >= 0;
       if (module === "proxy") {
         if (result3 && result3.status == 0 && result3.message == "NOTOK" && throttle) {
-          this.emit("debug", { action: "receiveError", id: id4, reason: "proxy-NOTOK", error: result3 });
+          this.emit("debug", { action: "receiveError", id: id5, reason: "proxy-NOTOK", error: result3 });
           response2.throwThrottleError(result3.result, THROTTLE);
         }
       } else {
         if (throttle) {
-          this.emit("debug", { action: "receiveError", id: id4, reason: "null result", error: result3.result });
+          this.emit("debug", { action: "receiveError", id: id5, reason: "null result", error: result3.result });
           response2.throwThrottleError(result3.result, THROTTLE);
         }
       }
@@ -52523,35 +52523,35 @@ var EtherscanProvider = class extends AbstractProvider {
     try {
       response.assertOk();
     } catch (error2) {
-      this.emit("debug", { action: "receiveError", id: id4, error: error2, reason: "assertOk" });
+      this.emit("debug", { action: "receiveError", id: id5, error: error2, reason: "assertOk" });
       assert4(false, "response error", "SERVER_ERROR", { request, response });
     }
     if (!response.hasBody()) {
-      this.emit("debug", { action: "receiveError", id: id4, error: "missing body", reason: "null body" });
+      this.emit("debug", { action: "receiveError", id: id5, error: "missing body", reason: "null body" });
       assert4(false, "missing response", "SERVER_ERROR", { request, response });
     }
     const result2 = JSON.parse(toUtf8String(response.body));
     if (module === "proxy") {
       if (result2.jsonrpc != "2.0") {
-        this.emit("debug", { action: "receiveError", id: id4, result: result2, reason: "invalid JSON-RPC" });
+        this.emit("debug", { action: "receiveError", id: id5, result: result2, reason: "invalid JSON-RPC" });
         assert4(false, "invalid JSON-RPC response (missing jsonrpc='2.0')", "SERVER_ERROR", { request, response, info: { result: result2 } });
       }
       if (result2.error) {
-        this.emit("debug", { action: "receiveError", id: id4, result: result2, reason: "JSON-RPC error" });
+        this.emit("debug", { action: "receiveError", id: id5, result: result2, reason: "JSON-RPC error" });
         assert4(false, "error response", "SERVER_ERROR", { request, response, info: { result: result2 } });
       }
-      this.emit("debug", { action: "receiveRequest", id: id4, result: result2 });
+      this.emit("debug", { action: "receiveRequest", id: id5, result: result2 });
       return result2.result;
     } else {
       if (result2.status == 0 && (result2.message === "No records found" || result2.message === "No transactions found")) {
-        this.emit("debug", { action: "receiveRequest", id: id4, result: result2 });
+        this.emit("debug", { action: "receiveRequest", id: id5, result: result2 });
         return result2.result;
       }
       if (result2.status != 1 || typeof result2.message === "string" && !result2.message.match(/^OK/)) {
-        this.emit("debug", { action: "receiveError", id: id4, result: result2 });
+        this.emit("debug", { action: "receiveError", id: id5, result: result2 });
         assert4(false, "error response", "SERVER_ERROR", { request, response, info: { result: result2 } });
       }
-      this.emit("debug", { action: "receiveRequest", id: id4, result: result2 });
+      this.emit("debug", { action: "receiveRequest", id: id5, result: result2 });
       return result2.result;
     }
   }
@@ -56825,15 +56825,251 @@ var DidVisitor = class extends idl_exports.Visitor {
   }
 };
 
+// node_modules/azle/src/lib/stable/stable_structures/stable_b_tree_map.ts
+var StableBTreeMap2 = class {
+  constructor(memoryId, keySerializable = stableJson, valueSerializable = stableJson) {
+    __publicField(this, "memoryId");
+    __publicField(this, "keySerializable");
+    __publicField(this, "valueSerializable");
+    this.memoryId = memoryId;
+    this.keySerializable = keySerializable;
+    this.valueSerializable = valueSerializable;
+    if (globalThis._azleNodeWasmEnvironment !== true) {
+      if (globalThis._azleIcExperimental !== void 0) {
+        globalThis._azleIcExperimental.stableBTreeMapInit(
+          memoryId.toString()
+        );
+      }
+      if (globalThis._azleIcStable !== void 0) {
+        globalThis._azleIcStable.stableBTreeMapInit(memoryId);
+      }
+    }
+  }
+  /**
+   * Checks if the given key exists in the map.
+   * @param key the key to check.
+   * @returns `true` if the key exists in the map, `false` otherwise.
+   */
+  containsKey(key) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedKey = this.keySerializable.toBytes(key);
+    if (globalThis._azleIcExperimental !== void 0) {
+      return globalThis._azleIcExperimental.stableBTreeMapContainsKey(
+        this.memoryId.toString(),
+        encodedKey.buffer
+      );
+    }
+    return globalThis._azleIcStable.stableBTreeMapContainsKey(
+      this.memoryId,
+      encodedKey
+    );
+  }
+  /**
+   * Retrieves the value stored at the provided key.
+   * @param key the location from which to retrieve.
+   * @returns the value associated with the given key, if it exists.
+   */
+  get(key) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedKey = this.keySerializable.toBytes(key);
+    const encodedResult = globalThis._azleIcExperimental !== void 0 ? globalThis._azleIcExperimental.stableBTreeMapGet(
+      this.memoryId.toString(),
+      encodedKey.buffer
+    ) : globalThis._azleIcStable.stableBTreeMapGet(
+      this.memoryId,
+      encodedKey
+    );
+    if (encodedResult === void 0) {
+      return null;
+    } else {
+      return this.valueSerializable.fromBytes(
+        new Uint8Array(encodedResult)
+      );
+    }
+  }
+  /**
+   * Inserts a value into the map at the provided key.
+   * @param key the location at which to insert.
+   * @param value the value to insert.
+   * @returns the previous value of the key, if present.
+   */
+  insert(key, value) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedKey = this.keySerializable.toBytes(key);
+    const encodedValue = this.valueSerializable.toBytes(value);
+    const encodedResult = globalThis._azleIcExperimental !== void 0 ? globalThis._azleIcExperimental.stableBTreeMapInsert(
+      this.memoryId.toString(),
+      encodedKey.buffer,
+      encodedValue.buffer
+    ) : globalThis._azleIcStable.stableBTreeMapInsert(
+      this.memoryId,
+      encodedKey,
+      encodedValue
+    );
+    if (encodedResult === void 0) {
+      return null;
+    } else {
+      return this.valueSerializable.fromBytes(
+        new Uint8Array(encodedResult)
+      );
+    }
+  }
+  /**
+   * Checks if the map is empty.
+   * @returns `true` if the map contains no elements, `false` otherwise.
+   */
+  isEmpty() {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    if (globalThis._azleIcExperimental !== void 0) {
+      return globalThis._azleIcExperimental.stableBTreeMapIsEmpty(
+        this.memoryId.toString()
+      );
+    }
+    return globalThis._azleIcStable.stableBTreeMapIsEmpty(this.memoryId);
+  }
+  /**
+   * Retrieves the items in the map in sorted order.
+   * @param startIndex the starting index to begin retrieval
+   * @param length the number of items to retrieve
+   * @returns tuples representing key/value pairs.
+   */
+  items(startIndex, length) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedItems = globalThis._azleIcExperimental !== void 0 ? globalThis._azleIcExperimental.stableBTreeMapItems(
+      this.memoryId.toString(),
+      startIndex?.toString() ?? "0",
+      length?.toString() ?? "NOT_SET"
+    ) : globalThis._azleIcStable.stableBTreeMapItems(
+      this.memoryId,
+      startIndex ?? 0,
+      length ?? -1
+    );
+    return encodedItems.map(([encodedKey, encodedValue]) => {
+      return [
+        this.keySerializable.fromBytes(new Uint8Array(encodedKey)),
+        this.valueSerializable.fromBytes(new Uint8Array(encodedValue))
+      ];
+    });
+  }
+  /**
+   * The keys for each element in the map in sorted order.
+   * @param startIndex the starting index to begin retrieval
+   * @param length the number of keys to retrieve
+   * @returns the keys in the map.
+   */
+  keys(startIndex, length) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedKeys = globalThis._azleIcExperimental !== void 0 ? globalThis._azleIcExperimental.stableBTreeMapKeys(
+      this.memoryId.toString(),
+      startIndex?.toString() ?? "0",
+      length?.toString() ?? "NOT_SET"
+    ) : globalThis._azleIcStable.stableBTreeMapKeys(
+      this.memoryId,
+      startIndex ?? 0,
+      length ?? -1
+    );
+    return encodedKeys.map((encodedKey) => {
+      return this.keySerializable.fromBytes(new Uint8Array(encodedKey));
+    });
+  }
+  /**
+   * Checks to see how many elements are in the map.
+   * @returns the number of elements in the map.
+   */
+  len() {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    if (globalThis._azleIcExperimental !== void 0) {
+      return BigInt(
+        globalThis._azleIcExperimental.stableBTreeMapLen(
+          this.memoryId.toString()
+        )
+      );
+    }
+    return BigInt(
+      globalThis._azleIcStable.stableBTreeMapLen(this.memoryId)
+    );
+  }
+  /**
+   * Removes a key from the map.
+   * @param key the location from which to remove.
+   * @returns the previous value at the key if it exists, `null` otherwise.
+   */
+  remove(key) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedKey = this.keySerializable.toBytes(key);
+    const encodedValue = globalThis._azleIcExperimental !== void 0 ? globalThis._azleIcExperimental.stableBTreeMapRemove(
+      this.memoryId.toString(),
+      encodedKey.buffer
+    ) : globalThis._azleIcStable.stableBTreeMapRemove(
+      this.memoryId,
+      encodedKey
+    );
+    if (encodedValue === void 0) {
+      return null;
+    } else {
+      return this.valueSerializable.fromBytes(
+        new Uint8Array(encodedValue)
+      );
+    }
+  }
+  /**
+   * The values in the map in sorted order.
+   * @param startIndex the starting index to begin retrieval
+   * @param length the number of values to retrieve
+   * @returns the values in the map.
+   */
+  values(startIndex, length) {
+    if (globalThis._azleIcStable === void 0 && globalThis._azleIcExperimental === void 0) {
+      return void 0;
+    }
+    const encodedValues = globalThis._azleIcExperimental !== void 0 ? globalThis._azleIcExperimental.stableBTreeMapValues(
+      this.memoryId.toString(),
+      startIndex?.toString() ?? "0",
+      length?.toString() ?? "NOT_SET"
+    ) : globalThis._azleIcStable.stableBTreeMapValues(
+      this.memoryId,
+      startIndex ?? 0,
+      length ?? -1
+    );
+    return encodedValues.map((encodedValue) => {
+      return this.valueSerializable.fromBytes(
+        new Uint8Array(encodedValue)
+      );
+    });
+  }
+};
+
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
   authorizeInstitution: () => authorizeInstitution,
   default: () => src_default,
   derivation_origin: () => derivation_origin,
+  getCredential: () => getCredential,
+  getCredentialsForStudent: () => getCredentialsForStudent,
+  getOwner: () => getOwner,
   get_credential: () => get_credential,
+  isInstitutionAuthorized: () => isInstitutionAuthorized,
   issueCredential: () => issueCredential,
-  prepare_credential: () => prepare_credential
+  prepare_credential: () => prepare_credential,
+  setOwner: () => setOwner,
+  setStudent: () => setStudent
 });
 var Credential = Record2({
   student: Principal3,
@@ -56841,43 +57077,153 @@ var Credential = Record2({
   degree: text,
   issueDate: nat64
 });
-var credentials = StableBTreeMap(0);
+var CredentialRequest = Record2({
+  credential_subject_did: text,
+  credential_spec: Record2({
+    credential_type: text,
+    arguments: Record2({})
+  })
+});
+var CredentialData = Record2({
+  credential_jwt: text,
+  expiration_timestamp_ms: nat64
+});
+var credentials = new StableBTreeMap2(0);
 var credentialIdCounter = 1n;
-var authorizedInstitutions = /* @__PURE__ */ new Set();
+var authorizedInstitutions = new StableBTreeMap2(1);
+var preparedCredentials = new StableBTreeMap2(3);
+var owner = null;
+var setOwner = async () => {
+  if (owner !== null) {
+    throw new Error("Owner already set");
+  }
+  owner = ic.caller();
+  return "Owner set successfully";
+};
+var getOwner = async () => {
+  if (owner === null) {
+    throw new Error("Owner not set");
+  }
+  return owner;
+};
+var setStudent = async (student) => {
+  if (student === null) {
+    throw new Error("Student not set");
+  }
+  student = ic.caller();
+  return "Student set successfully";
+};
 var vc_consent_message = () => {
   return "I hereby consent to issue a verifiable academic credential.";
 };
 var derivation_origin = () => {
-  return ic.caller().toText();
+  return `https://${ic.id().toText()}.icp0.io`;
 };
 var prepare_credential = async (request) => {
-  return `Prepared credential for request: ${request}`;
+  try {
+    const parsedRequest = JSON.parse(request);
+    const { credential_subject_did, credential_spec } = parsedRequest;
+    if (!credential_subject_did || !credential_spec || !credential_spec.credential_type) {
+      throw new Error("Invalid credential request: missing required fields");
+    }
+    const credentialJwt = `jwt.${credential_subject_did}.${credential_spec.credential_type}`;
+    const expirationTimestampMs = BigInt(Date.now()) + 24n * 60n * 60n * 1000n;
+    const credentialData = {
+      credential_jwt: credentialJwt,
+      expiration_timestamp_ms: expirationTimestampMs
+    };
+    const key = credential_subject_did;
+    console.log("Storing credential with key:", key);
+    console.log("Storing credential data:", credentialData);
+    preparedCredentials.insert(key, credentialData);
+    const dataHash = Buffer.from(key).slice(0, 31);
+    ic.setCertifiedData(dataHash);
+    return key;
+  } catch (error2) {
+    console.error("Error in prepare_credential:", error2);
+    return `Error: ${error2.message}`;
+  }
 };
 var get_credential = async (context) => {
-  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+  console.log("Original context:", context);
+  const key = context;
+  console.log("Using key:", key);
+  const credentialDataOpt = preparedCredentials.get(key);
+  console.log("Found credential data:", credentialDataOpt);
+  if (credentialDataOpt !== null) {
+    return credentialDataOpt.credential_jwt;
+  } else {
+    return "Error: No prepared credential found for this context";
+  }
 };
 var issueCredential = async ({ student, institution, degree, issueDate }) => {
-  const id4 = credentialIdCounter;
+  const institution_caller = ic.caller().toText();
+  if (!authorizedInstitutions.get(institution_caller)) {
+    throw new Error("Institution is not authorized");
+  }
+  const id5 = credentialIdCounter;
   credentialIdCounter += 1n;
-  credentials.insert(id4, {
+  const credential = {
     student,
     institution,
     degree,
     issueDate
-  });
-  return id4;
+  };
+  credentials.insert(id5, credential);
+  return id5;
 };
 var authorizeInstitution = async (institution) => {
-  authorizedInstitutions.add(institution);
-  return "Authorization of Institution successful!";
+  if (owner === null) {
+    throw new Error("Owner not set");
+  }
+  if (ic.caller().toText() !== owner.toText()) {
+    throw new Error("Only the owner can authorize institutions");
+  }
+  authorizedInstitutions.insert(institution.toText(), institution);
+  return `Institution authorized successfully`;
+};
+var getCredential = async (id5) => {
+  const result2 = credentials.get(id5);
+  return result2 === null ? None : Some(result2);
+};
+var getCredentialsForStudent = async (student) => {
+  const result2 = [];
+  for (let i2 = 1n; i2 < credentialIdCounter; i2++) {
+    const credOpt = credentials.get(i2);
+    if (credOpt && credOpt.student.toText() === student.toText()) {
+      result2.push(credOpt);
+    }
+  }
+  return result2;
+};
+var isInstitutionAuthorized = async (institution) => {
+  const institutionText = institution.toText();
+  const result2 = authorizedInstitutions.get(institutionText);
+  return result2 !== null;
 };
 var src_default = Canister({
+  // Testing funtions
+  setOwner: update([], text, setOwner),
+  // (Tested)
+  setStudent: update([Principal3], text, setStudent),
+  //(Tested)
+  getOwner: query([], Principal3, getOwner),
+  //(Tested)
+  // Real needed funtions
   vc_consent_message: query([], text, vc_consent_message),
+  //(Tested)
   derivation_origin: query([], text, derivation_origin),
+  //(Tested)
   prepare_credential: update([text], text, prepare_credential),
   get_credential: update([text], text, get_credential),
   issueCredential: update([Credential], nat64, issueCredential),
-  authorizeInstitution: update([Principal3], text, authorizeInstitution)
+  //(Tested)
+  authorizeInstitution: update([Principal3], text, authorizeInstitution),
+  //(Tested)
+  getCredential: query([nat64], Opt2(Credential), getCredential),
+  getCredentialsForStudent: query([Principal3], Vec2(Credential), getCredentialsForStudent),
+  isInstitutionAuthorized: query([Principal3], bool, isInstitutionAuthorized)
+  //(Tested)
 });
 
 // <stdin>

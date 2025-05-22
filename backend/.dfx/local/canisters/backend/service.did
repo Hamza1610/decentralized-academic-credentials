@@ -1,7 +1,25 @@
 service : {
   authorizeInstitution : (principal) -> (text);
   derivation_origin : () -> (text) query;
+  getCredential : (nat64) -> (
+      opt record {
+        issueDate : nat64;
+        institution : principal;
+        degree : text;
+        student : principal;
+      },
+    ) query;
+  getCredentialsForStudent : (principal) -> (
+      vec record {
+        issueDate : nat64;
+        institution : principal;
+        degree : text;
+        student : principal;
+      },
+    ) query;
+  getOwner : () -> (principal) query;
   get_credential : (text) -> (text);
+  isInstitutionAuthorized : (principal) -> (bool) query;
   issueCredential : (
       record {
         issueDate : nat64;
@@ -11,5 +29,7 @@ service : {
       },
     ) -> (nat64);
   prepare_credential : (text) -> (text);
+  setOwner : () -> (text);
+  setStudent : (principal) -> (text);
   vc_consent_message : () -> (text) query;
 }
