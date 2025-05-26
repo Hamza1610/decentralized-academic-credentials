@@ -1,4 +1,5 @@
 html, body, #root, .main {
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,3 +50,4 @@ button:hover {
   min-height: 200px;
   min-width: 400px;
 }
+
