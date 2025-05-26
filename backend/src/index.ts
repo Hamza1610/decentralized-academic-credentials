@@ -294,7 +294,7 @@ export default Canister ({
     get_credential: update([text], text, (get_credential)),
     issueCredential: update([Credential], nat64, (issueCredential)), //(Tested)
     authorizeInstitution: update([Principal], text, (authorizeInstitution)), //(Tested)
-    getCredential: query([nat64], Opt(Credential), (getCredential)),
-    getCredentialsForStudent: query([Principal], Vec(Credential), (getCredentialsForStudent)),
+    getCredential: query([nat64], Opt(Credential), (getCredential)), //(Tested)
+    getCredentialsForStudent: query([Principal], Vec(Credential), (getCredentialsForStudent)), //(Tested)
     isInstitutionAuthorized: query([Principal], bool, (isInstitutionAuthorized)) //(Tested)
 })

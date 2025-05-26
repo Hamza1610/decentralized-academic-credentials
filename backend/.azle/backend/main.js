@@ -57221,7 +57221,9 @@ var src_default = Canister({
   authorizeInstitution: update([Principal3], text, authorizeInstitution),
   //(Tested)
   getCredential: query([nat64], Opt2(Credential), getCredential),
+  //(Tested)
   getCredentialsForStudent: query([Principal3], Vec2(Credential), getCredentialsForStudent),
+  //(Tested)
   isInstitutionAuthorized: query([Principal3], bool, isInstitutionAuthorized)
   //(Tested)
 });
