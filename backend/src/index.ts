@@ -32,7 +32,11 @@ type Credential = {
     student: Principal;
     institution: Principal;
     degree: text;
+    major: text;
+    gpa: text;
     issueDate: bigint;  // nat64 is represented as bigint in TypeScript
+    revoked: bool;
+    revocationReason: Opt<text>;
 };
 
 // Type for the credentials map
@@ -71,11 +75,22 @@ const CredentialData = Record({
 
 
 // Storage
+
 const credentials = new StableBTreeMap<nat64, Credential>(0);
 let credentialIdCounter: CredentialIdCounter = 1n;
 const authorizedInstitutions: AuthorizedInstitutions = new StableBTreeMap<text, Principal>(1);
 let preparedCredentials = new StableBTreeMap<text, { credential_jwt: string; expiration_timestamp_ms: bigint }>(3);
 let owner: Principal | null = null;
+
+// Event log for credential actions
+type EventLogEntry = {
+    eventType: text; // 'issue' | 'revoke'
+    credentialId: nat64;
+    actor: Principal;
+    timestamp: nat64;
+    details: text;
+};
+let eventLog: EventLogEntry[] = [];
 
 
 // Set Owner (only callable once)
@@ -217,8 +232,7 @@ export const get_credential = async (context: text): Promise<text> => {
 
 
 // 5. Update: Issue a new on‑chain credential
-export const issueCredential = async ({ student, institution, degree, issueDate }: Credential): Promise<nat64> => {
-
+export const issueCredential = async ({ student, institution, degree, major, gpa, issueDate }: Credential): Promise<nat64> => {
     // Issues a credential if the caller (institution) is authorized
     const institution_caller = ic.caller().toText();
     if (!authorizedInstitutions.get(institution_caller)) {
@@ -230,10 +244,49 @@ export const issueCredential = async ({ student, institution, degree, issueDate 
         student,
         institution,
         degree,
-        issueDate
+        major,
+        gpa,
+        issueDate,
+        revoked: false,
+        revocationReason: None
     };
     credentials.insert(id, credential);
+    eventLog.push({
+        eventType: "issue",
+        credentialId: id,
+        actor: ic.caller(),
+        timestamp: BigInt(Date.now()),
+        details: `Credential issued for student ${student.toText()}`
+    });
     return id;
+};
+
+// Revoke a credential
+export const revokeCredential = async (id: nat64, reason: text): Promise<text> => {
+    const credential = credentials.get(id);
+    if (!credential) {
+        throw new Error("Credential not found");
+    }
+    // Only the issuing institution or owner can revoke
+    if (ic.caller().toText() !== credential.institution.toText() && (owner === null || ic.caller().toText() !== owner.toText())) {
+        throw new Error("Not authorized to revoke this credential");
+    }
+    credential.revoked = true;
+    credential.revocationReason = Some(reason);
+    credentials.insert(id, credential);
+    eventLog.push({
+        eventType: "revoke",
+        credentialId: id,
+        actor: ic.caller(),
+        timestamp: BigInt(Date.now()),
+        details: `Credential revoked: ${reason}`
+    });
+    return "Credential revoked successfully";
+};
+
+// Get event log (last 100 entries)
+export const getEventLog = async (): Promise<Vec<EventLogEntry>> => {
+    return eventLog.slice(-100);
 };
 
 
@@ -293,6 +346,14 @@ export default Canister ({
     prepare_credential: update([text], text, (prepare_credential)),
     get_credential: update([text], text, (get_credential)),
     issueCredential: update([Credential], nat64, (issueCredential)), //(Tested)
+    revokeCredential: update([nat64, text], text, (revokeCredential)),
+    getEventLog: query([], Vec(Record({
+        eventType: text,
+        credentialId: nat64,
+        actor: Principal,
+        timestamp: nat64,
+        details: text
+    })), (getEventLog)),
     authorizeInstitution: update([Principal], text, (authorizeInstitution)), //(Tested)
     getCredential: query([nat64], Opt(Credential), (getCredential)), //(Tested)
     getCredentialsForStudent: query([Principal], Vec(Credential), (getCredentialsForStudent)), //(Tested)
