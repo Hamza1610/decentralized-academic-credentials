@@ -92,72 +92,52 @@ const CredentialVerify = () => {
               )}
               
               {!isVerifying && verificationResult === 'success' && credential && (
-                <div className="border border-green-100 rounded-lg bg-green-50 p-6 mb-6">
-                  <div className="flex items-center mb-6">
-                    <div className="bg-green-100 p-3 rounded-full">
-                      <Check className="text-green-600" size={24} />
-                    </div>
-                    <div className="ml-4">
-                      <h2 className="text-xl font-semibold text-green-800">Credential Verified</h2>
-                      <p className="text-green-700">This credential has been verified on the blockchain</p>
-                    </div>
+                <div className="mt-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    {credential.revoked ? (
+                      <>
+                        <X className="text-red-600" size={24} />
+                        <span className="text-red-700 font-semibold text-lg">Credential Revoked</span>
+                        {credential.revocationReason && (
+                          <span className="ml-2 text-xs text-gray-500">Reason: {credential.revocationReason}</span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <Check className="text-green-600" size={24} />
+                        <span className="text-green-700 font-semibold text-lg">Credential Verified</span>
+                      </>
+                    )}
                   </div>
-                  
-                  <div className="border-t border-green-100 pt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center mb-2">
-                            <Award className="text-primary mr-2" size={16} />
-                            <h3 className="font-medium text-gray-700">Credential</h3>
-                          </div>
-                          <p className="text-gray-900 font-semibold">{credential.degree}</p>
-                        </div>
-                        
-                        <div>
-                          <div className="flex items-center mb-2">
-                            <User className="text-primary mr-2" size={16} />
-                            <h3 className="font-medium text-gray-700">Student</h3>
-                          </div>
-                          <p className="text-gray-900">{credential.student.substring(0, 10)}...</p>
-                        </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <Award className="text-primary" size={20} />
+                        <span className="font-medium">Degree:</span>
+                        <span>{credential.degree}</span>
                       </div>
-                      
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center mb-2">
-                            <Building className="text-primary mr-2" size={16} />
-                            <h3 className="font-medium text-gray-700">Institution</h3>
-                          </div>
-                          <p className="text-gray-900">{credential.institution.substring(0, 10)}...</p>
-                        </div>
-                        
-                        <div>
-                          <div className="flex items-center mb-2">
-                            <Calendar className="text-primary mr-2" size={16} />
-                            <h3 className="font-medium text-gray-700">Issue Date</h3>
-                          </div>
-                          <p className="text-gray-900">
-                            {new Date(Number(credential.issueDate)).toLocaleDateString()}
-                          </p>
-                        </div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="font-medium">Major:</span>
+                        <span>{credential.major}</span>
                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 pt-6 border-t border-green-100">
-                    <div className="flex items-center">
-                      <div className="bg-green-100 p-2 rounded-full">
-                        <Check className="text-green-600" size={16} />
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="font-medium">GPA:</span>
+                        <span>{credential.gpa}</span>
                       </div>
-                      <span className="ml-2 text-green-800 font-medium">Blockchain Verified</span>
-                      <div className="ml-auto flex items-center">
-                        <button className="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors duration-200 mr-3">
-                          View Details
-                        </button>
-                        <button className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/90 transition-colors duration-200">
-                          Download Certificate
-                        </button>
+                      <div className="mb-2 flex items-center gap-2">
+                        <Building className="text-primary" size={20} />
+                        <span className="font-medium">Institution:</span>
+                        <span>{credential.institution}</span>
+                      </div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <User className="text-primary" size={20} />
+                        <span className="font-medium">Student:</span>
+                        <span>{credential.student}</span>
+                      </div>
+                      <div className="mb-2 flex items-center gap-2">
+                        <Calendar className="text-primary" size={20} />
+                        <span className="font-medium">Issue Date:</span>
+                        <span>{new Date(Number(credential.issueDate)).toLocaleDateString()}</span>
                       </div>
                     </div>
                   </div>
