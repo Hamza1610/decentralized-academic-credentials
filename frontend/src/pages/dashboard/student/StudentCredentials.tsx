@@ -13,6 +13,8 @@ const StudentCredentials = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [eventLog, setEventLog] = useState<any[]>([]);
+  const [showLog, setShowLog] = useState(false);
 
   useEffect(() => {
     const fetchCredentials = async () => {
@@ -27,17 +29,27 @@ const StudentCredentials = () => {
         }
       }
     };
-
     fetchCredentials();
   }, [user]);
+
+  const fetchEventLog = async () => {
+    const log = await apiService.getEventLog();
+    setEventLog(log);
+    setShowLog(true);
+  };
 
   const formatDate = (timestamp: bigint) => {
     return format(new Date(Number(timestamp)), 'MMM d, yyyy');
   };
 
-  const filteredCredentials = credentials.filter(credential =>
-    credential.degree.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCredentials = credentials.filter(credential => {
+    const matchesSearch = credential.degree.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      filterStatus === 'all' ||
+      (filterStatus === 'active' && !credential.revoked) ||
+      (filterStatus === 'revoked' && credential.revoked);
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <DashboardLayout>
@@ -59,20 +71,18 @@ const StudentCredentials = () => {
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
               />
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-2 items-center">
+              <label>Status:</label>
               <select
                 value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                onChange={e => setFilterStatus(e.target.value)}
+                className="border border-gray-300 rounded-md px-2 py-1"
               >
-                <option value="all">All Status</option>
-                <option value="verified">Verified</option>
-                <option value="pending">Pending</option>
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="revoked">Revoked</option>
               </select>
-              <Button variant="outline">
-                <Filter size={16} className="mr-2" />
-                Filters
-              </Button>
+              <Button variant="outline" onClick={fetchEventLog}>View Event Log</Button>
             </div>
           </div>
         </div>
@@ -119,6 +129,8 @@ const StudentCredentials = () => {
                       </div>
                       <div>
                         <h3 className="text-lg font-semibold">{credential.degree}</h3>
+                        <p className="text-gray-600 text-sm">Major: {credential.major}</p>
+                        <p className="text-gray-600 text-sm">GPA: {credential.gpa}</p>
                         <p className="text-gray-600 text-sm">
                           Institution: {credential.institution.substring(0, 12)}...
                         </p>
@@ -126,9 +138,14 @@ const StudentCredentials = () => {
                           Issued: {formatDate(credential.issueDate)}
                         </p>
                         <div className="flex items-center mt-2">
-                          <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
-                            Verified
-                          </span>
+                          {credential.revoked ? (
+                            <span className="bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full">Revoked</span>
+                          ) : (
+                            <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">Active</span>
+                          )}
+                          {credential.revoked && credential.revocationReason && (
+                            <span className="ml-2 text-xs text-gray-500">Reason: {credential.revocationReason}</span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -149,6 +166,39 @@ const StudentCredentials = () => {
                   </div>
                 </div>
               ))}
+      {/* Event Log Modal */}
+      {showLog && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full">
+            <h2 className="text-xl font-bold mb-4">Event Log</h2>
+            <Button variant="outline" className="mb-4" onClick={() => setShowLog(false)}>Close</Button>
+            <div className="overflow-x-auto max-h-96">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2">Type</th>
+                    <th className="px-4 py-2">Credential ID</th>
+                    <th className="px-4 py-2">Actor</th>
+                    <th className="px-4 py-2">Timestamp</th>
+                    <th className="px-4 py-2">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {eventLog.map((entry, idx) => (
+                    <tr key={idx}>
+                      <td className="px-4 py-2">{entry.eventType}</td>
+                      <td className="px-4 py-2">{entry.credentialId.toString()}</td>
+                      <td className="px-4 py-2">{entry.actor}</td>
+                      <td className="px-4 py-2">{new Date(Number(entry.timestamp)).toLocaleString()}</td>
+                      <td className="px-4 py-2">{entry.details}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
             </div>
           )}
         </div>
